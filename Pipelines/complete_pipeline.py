@@ -4,7 +4,7 @@ from Texts.rib_extractor import extract_rib
 from Texts.info_extracted_verification import verify_infos_extracted
 
 
-def pipeline_for_no_ocr_pdf(file_path):
+def pipeline(file_path):
     """
     Pipeline for processing pdf files that are not OCR-ed.
     :param file_path: path to pdf file
@@ -24,5 +24,5 @@ def pipeline_for_no_ocr_pdf(file_path):
 
 if __name__ == '__main__':
     file_path = r'../Files/29-03-2023 (10).pdf'
-    info = pipeline_for_no_ocr_pdf(file_path)
+    info = pipeline(file_path)
     print(info)
