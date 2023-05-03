@@ -1,5 +1,5 @@
 from GPT.gpt import get_info_from_file
-from PDF_preprocessors.pdf_to_txt_convertor import convert_pdf_to_txt
+from Files_preprocessors.pdf_to_txt_convertor import convert_pdf_to_txt
 from Texts.rib_extractor import extract_rib
 from Texts.info_extracted_verification import verify_infos_extracted
 
@@ -23,6 +23,6 @@ def pipeline(file_path):
 
 
 if __name__ == '__main__':
-    file_path = r'../Files/29-03-2023 (10).pdf'
+    file_path = r'../Files/29-03-2023 (14).pdf'
     info = pipeline(file_path)
     print(info)

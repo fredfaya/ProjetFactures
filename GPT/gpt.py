@@ -1,7 +1,7 @@
 import re
 import openai
 import configparser
-from PDF_preprocessors.pdf_to_txt_convertor import convert_pdf_to_txt
+from Files_preprocessors.pdf_to_txt_convertor import convert_pdf_to_txt
 
 
 def get_api_key() -> str:

@@ -1,6 +1,6 @@
 import re
 
-from PDF_preprocessors.pdf_to_txt_convertor import convert_pdf_to_txt
+from Files_preprocessors.pdf_to_txt_convertor import convert_pdf_to_txt
 
 
 def verify_infos_extracted(infos: dict, path_to_file: str) -> dict:
