@@ -17,12 +17,12 @@ def pipeline_for_no_ocr_pdf(file_path):
     # extract RIB
     infos['RIB'] = extract_rib(txt_text)
     # verify that all the information extracted are present in the file
-    infos = verify_infos_extracted(infos, file_path)
+    #infos = verify_infos_extracted(infos, file_path)
 
     return infos
 
 
 if __name__ == '__main__':
-    file_path = r'../Files/facture6.pdf'
+    file_path = r'../Files/29-03-2023 (10).pdf'
     info = pipeline_for_no_ocr_pdf(file_path)
     print(info)

@@ -10,5 +10,5 @@ def extract_rib(text: str) -> list[str]:
     Returns:
         str: The extracted RIB.
     """
-    rib_regex = re.compile(r"[A-Z]{2}\d{2}\s(?:\d{4}\s){3,}\d*[0-9A-Za-z]?")
+    rib_regex = re.compile(r"[A-Z]{2}\d{2}\s?(?:\d{4}\s?){3,}\d*[0-9A-Za-z]?")
     return rib_regex.findall(text)
