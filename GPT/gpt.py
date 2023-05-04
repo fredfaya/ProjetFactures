@@ -1,22 +1,32 @@
 import re
 import openai
 import configparser
+from typing import Optional
+
+from openai import error
+
 from Files_preprocessors.pdf_to_txt_convertor import convert_pdf_to_txt
+from Logs.my_logger import logger
 
 
 def get_api_key() -> str:
+    logger.info("Getting the gpt api key")
     # Créer le parser de configuration
     config = configparser.ConfigParser()
 
-    # Lire la configuration depuis un fichier
-    config.read(
-        "D:\Documents\Stage PFE\Projet Factrures\ProjetFacture\Config\gpt_api_connection_config.ini"
-    )
+    try:
+        # Lire la configuration depuis un fichier
+        config.read(
+            "D:\Documents\Stage PFE\Projet Factrures\ProjetFacture\Config\gpt_api_connection_config.ini"
+        )
 
-    return config.get("gpt", "api_key")
+        return config.get("gpt", "api_key")
+    except configparser.NoSectionError:
+        logger.error("An error occurred while reading the configuration file")
 
 
 def create_prompt(path_to_file: str) -> str:
+    logger.info("Creating the prompt")
     prompt = (
         "give me the issuer or sender or bill to name, issuer or sender or bill to address , "
         "delivery or receiver or ship to name, delivery or receiver or ship to address, total amount,"
@@ -24,17 +34,14 @@ def create_prompt(path_to_file: str) -> str:
     )
 
     prompt += (
-        convert_pdf_to_txt(path_to_file=path_to_file)
-        + "Most of the time, the first name and address are the one of the company that "
-        "produces the invoice, not the one of the issuer, so analyze the text in more detail to get the correct "
-        "elements for the order issuer or issuer ou sent by name and address\n"
-        + "The output should be like this : \n"
-        + "issuer or sender or bill to name : \n"
-        + "issuer or sender or bill to address : \n"
-        + "delivery or receiver or ship to name : \n"
-        + "delivery or receiver or ship to address : \n"
-        + "total amount : \n"
-        + "goods origin or country of origin : \n"
+            convert_pdf_to_txt(path_to_file=path_to_file)
+            + "The output should be like this : \n"
+            + "issuer or sender or bill to name : \n"
+            + "issuer or sender or bill to address : \n"
+            + "delivery or receiver or ship to name : \n"
+            + "delivery or receiver or ship to address : \n"
+            + "total amount : \n"
+            + "goods origin or country of origin : \n"
     )
 
     return prompt
@@ -46,6 +53,7 @@ def is_valid_amount(amount: str) -> bool:
 
 
 def response_to_dict(response: str) -> dict:
+    logger.info("Getting responses from the gpt api")
     dict_fields = [
         "expeditor_name",
         "expeditor_address",
@@ -70,20 +78,27 @@ def response_to_dict(response: str) -> dict:
     return result
 
 
-def get_info_from_file(path_to_file: str) -> dict:
+def get_info_from_file(path_to_file: str) -> Optional[dict]:
     # recuperer l'api key du fichier de configuration
     openai.api_key = get_api_key()
 
     prompt = create_prompt(path_to_file=path_to_file)
 
-    response = openai.Completion.create(
-        engine="text-davinci-003",
-        prompt=prompt,
-        temperature=0.3,
-        max_tokens=2000,
-    )
+    try:
+        response = openai.Completion.create(
+            engine="text-davinci-003",
+            prompt=prompt,
+            temperature=0.3,
+            max_tokens=2000,
+        )
+        return response_to_dict(response=response.choices[0].text)
 
-    return response_to_dict(response=response.choices[0].text)
+    except error.APIConnectionError as e:
+        logger.error("An error occurred while connecting to the gpt API")
+        raise e
+    except error.AuthenticationError as e:
+        logger.error("An error occurred while authenticating to the gpt API")
+        raise e
 
 
 if __name__ == "__main__":
