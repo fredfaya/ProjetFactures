@@ -37,35 +37,35 @@ def display_info_requested(info_extractred: dict):
         <div class="shadow bg-primary rounded pt-3 pb-3">
             <div class="row m-auto d-flex justify-content-between bg-white px-4 pt-2 w-75 rounded-top">
                 <div class="form-label" style="font-weight: bold; color:black">Expeditor Name</div>
-                <div style="color: #3286E6; font-size: 20px; padding-left:50px"> {} </div>
+                <div style="color: #3286E6; font-size: 10px; padding-left:50px"> {} </div>
             </div>
             <div class="row m-auto d-flex justify-content-between bg-white px-4 pt-1 w-75">
                 <div class="form-label" style="font-weight: bold; color:black">Expeditor Address</div>
-                <div style="color: #3286E6; font-size: 20px; padding-left:50px"> {} </div>
+                <div style="color: #3286E6; font-size: 10px; padding-left:50px"> {} </div>
             </div>
             <div class="row m-auto d-flex justify-content-between bg-white px-4 pt-1 w-75">
                 <div class="form-label" style="font-weight: bold; color:black">Receiver Name</div>
-                <div style="color: #3286E6; font-size: 20px; padding-left:50px"> {} </div>
+                <div style="color: #3286E6; font-size: 10px; padding-left:50px"> {} </div>
             </div>
             <div class="row m-auto d-flex justify-content-between bg-white px-4 pt-1 w-75">
                 <div class="form-label" style="font-weight: bold; color:black">Receiver Address</div>
-                <div style="color: #3286E6; font-size: 20px; padding-left:50px"> {} </div>
+                <div style="color: #3286E6; font-size: 10px; padding-left:50px"> {} </div>
             </div>
             <div class="row m-auto d-flex justify-content-between bg-white px-4 pt-1 w-75">
                 <div class="form-label" style="font-weight: bold; color:black">Total Amount</div>
-                <div style="color: #3286E6; font-size: 20px; padding-left:50px"> {} </div>
+                <div style="color: #3286E6; font-size: 10px; padding-left:50px"> {} </div>
             </div>
             <div class="row m-auto d-flex justify-content-between bg-white px-4 pt-1 w-75">
                 <div class="form-label" style="font-weight: bold; color:black">Goods Origin</div>
-                <div style="color: #3286E6; font-size: 20px; padding-left:50px"> {} </div>
+                <div style="color: #3286E6; font-size: 10px; padding-left:50px"> {} </div>
             </div>
             <div class="row m-auto d-flex justify-content-between bg-white px-4 pt-1 pb-2 w-75 rounded-bottom">
                 <div class="form-label" style="font-weight: bold; color:black">Reference</div>
-                <div style="color: #3286E6; font-size: 20px; padding-left:50px"> {} </div>
+                <div style="color: #3286E6; font-size: 10px; padding-left:50px"> {} </div>
             </div>
             <div class="row m-auto d-flex justify-content-between bg-white px-4 pt-1 pb-2 w-75 rounded-bottom">
                 <div class="form-label" style="font-weight: bold; color:black">Incoterm</div>
-                <div style="color: #3286E6; font-size: 20px; padding-left:50px"> {} </div>
+                <div style="color: #3286E6; font-size: 10px; padding-left:50px"> {} </div>
             </div>
         </div>    
 
@@ -101,6 +101,7 @@ informations_modal = Modal("", key="pay")
 space_div()
 
 uploaded_file = st.file_uploader("Uploader un fichier")
+
 
 if uploaded_file is not None:
     # Traitez le fichier ici
@@ -146,7 +147,7 @@ if uploaded_file is not None:
 
 
     elif informations_modal.is_open():
-        with informations_modal.container():
+        with st.expander("Informations extracted from file {}".format(uploaded_file.name)):
 
             columns_header = st.columns((1.56, 4, 0.75))
             columns_header[1].markdown('<p style="font-family:sans-serif; color:black; font-size: 25px;">INFORMATIONS '
