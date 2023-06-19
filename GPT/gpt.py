@@ -1,13 +1,13 @@
-import re
-import openai
 import configparser
+import re
+from pathlib import Path
 from typing import Optional
 
+import openai
 from openai import error
 
 from Files_preprocessors.pdf_to_txt_convertor import convert_pdf_to_txt
 from Logs.my_logger import logger
-from pathlib import Path
 
 
 def get_api_key() -> str:
@@ -28,6 +28,7 @@ def get_api_key() -> str:
         return config.get("gpt", "api_key")
     except configparser.NoSectionError:
         logger.error("An error occurred while reading the configuration file")
+    return ""
 
 
 def create_prompt(path_to_file: str) -> str:
@@ -44,16 +45,16 @@ def create_prompt(path_to_file: str) -> str:
     )
 
     prompt += (
-            convert_pdf_to_txt(path_to_file=path_to_file)
-            + "The output should be like this : \n"
-            + "issuer or sender or bill to name : \n"
-            + "issuer or sender or bill to address : \n"
-            + "delivery or receiver or ship to name : \n"
-            + "delivery or receiver or ship to address : \n"
-            + "total amount : \n"
-            + "goods origin or country of origin : \n"
-            + "reference : \n"
-            + "incoterm : \n"
+        convert_pdf_to_txt(path_to_file=path_to_file)
+        + "The output should be like this : \n"
+        + "issuer or sender or bill to name : \n"
+        + "issuer or sender or bill to address : \n"
+        + "delivery or receiver or ship to name : \n"
+        + "delivery or receiver or ship to address : \n"
+        + "total amount : \n"
+        + "goods origin or country of origin : \n"
+        + "reference : \n"
+        + "incoterm : \n"
     )
 
     return prompt
@@ -84,7 +85,7 @@ def response_to_dict(response: str) -> dict:
         "total_amount",
         "goods_origin",
         "reference",
-        "incoterm"
+        "incoterm",
     ]
     lines = response.strip().split("\n")
     result = {}

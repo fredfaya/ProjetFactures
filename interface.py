@@ -1,7 +1,4 @@
-import os
-import sys
 import tempfile
-from pathlib import Path
 
 import streamlit as st
 import streamlit.components.v1 as components
@@ -11,10 +8,10 @@ from streamlit_modal import Modal
 from Files_preprocessors.result_saver import dict_to_excel
 from Pipelines.complete_pipeline import pipeline
 
-
 # Définir informations_extracted comme une variable globale
-if 'informations_extracted' not in st.session_state:
-    st.session_state['informations_extracted'] = ""
+if "informations_extracted" not in st.session_state:
+    st.session_state["informations_extracted"] = ""
+
 
 def display_head_image():
     img = Image.open("UI/facture1_page-0001.jpg")
@@ -70,14 +67,19 @@ def display_info_requested(info_extractred: dict):
                 <div class="form-label" style="font-weight: bold; color:black">Incoterm</div>
                 <div style="color: #3286E6; font-size: 10px; padding-left:50px"> {} </div>
             </div>
-        </div>    
+        </div>
 
-        """.format(info_extractred["expeditor_name"], info_extractred["expeditor_address"],
-                   info_extractred["receiver_name"], info_extractred["receiver_address"],
-                   info_extractred["total_amount"], info_extractred["goods_origin"], info_extractred["reference"],
-                   info_extractred["incoterm"])
-        ,
-        unsafe_allow_html=True
+        """.format(
+            info_extractred["expeditor_name"],
+            info_extractred["expeditor_address"],
+            info_extractred["receiver_name"],
+            info_extractred["receiver_address"],
+            info_extractred["total_amount"],
+            info_extractred["goods_origin"],
+            info_extractred["reference"],
+            info_extractred["incoterm"],
+        ),
+        unsafe_allow_html=True,
     )
 
 
@@ -95,7 +97,6 @@ def display_title_bloc():
 
         """,
         height=100,
-
     )
 
 
@@ -118,12 +119,11 @@ if uploaded_file is not None:
 
     columns_button_extract = st.columns((2.25, 1, 2))
 
-    if columns_button_extract[1].button('Extract'):
-
+    if columns_button_extract[1].button("Extract"):
         st.session_state.informations_extracted = pipeline(temp_file.name)
         # save the information in a csv file
-        st.session_state.informations_extracted['File name'] = uploaded_file.name
-        dict_to_excel(st.session_state.informations_extracted, r'results.xlsx')
+        st.session_state.informations_extracted["File name"] = uploaded_file.name
+        dict_to_excel(st.session_state.informations_extracted, r"results.xlsx")
 
         if st.session_state.informations_extracted == "":
             error_modal.open()
@@ -136,7 +136,6 @@ if uploaded_file is not None:
 
     if error_modal.is_open():
         with error_modal.container():
-
             html_string = """
             <h1> An error occured while extracting informations </h1>
 
@@ -150,24 +149,28 @@ if uploaded_file is not None:
             columns_button_text = st.columns((2.35, 1, 2))
             columns_button_text[1].write("Please retry :smiley:")
             columns_button_close = st.columns((2.7, 1, 2))
-            close_modal1 = columns_button_close[1].button("Close", type='primary')
+            close_modal1 = columns_button_close[1].button("Close", type="primary")
             if close_modal1:
                 error_modal.close()
 
-
-
     elif informations_modal.is_open():
-        with st.expander("Informations extracted from file {}".format(uploaded_file.name)):
-
+        with st.expander(
+            "Informations extracted from file {}".format(uploaded_file.name)
+        ):
             columns_header = st.columns((1.56, 4, 0.75))
-            columns_header[1].markdown('<p style="font-family:sans-serif; color:black; font-size: 25px;">INFORMATIONS '
-                                       'EXTRACTED</p>', unsafe_allow_html=True)
+            columns_header[1].markdown(
+                '<p style="font-family:sans-serif; color:black; font-size: 25px;">INFORMATIONS '
+                "EXTRACTED</p>",
+                unsafe_allow_html=True,
+            )
 
             display_info_requested(st.session_state.informations_extracted)
 
             space_div()
 
             columns_button_validate = st.columns((2.2, 1, 2))
-            close_informations_modal = columns_button_validate[1].button("Close", type='primary')
+            close_informations_modal = columns_button_validate[1].button(
+                "Close", type="primary"
+            )
             if close_informations_modal:
                 informations_modal.close()

@@ -2,12 +2,12 @@ from GPT.gpt import is_valid_amount, response_to_dict
 
 
 def test_is_valid_amount():
-    assert is_valid_amount("123.45 KGS") == False
-    assert is_valid_amount("123 KGS") == False
-    assert is_valid_amount("123") == True
-    assert is_valid_amount("123.45") == True
-    assert is_valid_amount("123.45 USD") == True
-    assert is_valid_amount("EUR 123.45") == True
+    assert is_valid_amount("123.45 KGS") is False
+    assert is_valid_amount("123 KGS") is False
+    assert is_valid_amount("123") is True
+    assert is_valid_amount("123.45") is True
+    assert is_valid_amount("123.45 USD") is True
+    assert is_valid_amount("EUR 123.45") is True
 
 
 def test_response_to_dict():

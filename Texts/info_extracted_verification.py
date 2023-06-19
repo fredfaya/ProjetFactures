@@ -17,12 +17,12 @@ def verify_infos_extracted(infos: dict, path_to_file: str) -> dict:
             values = re.split(r"\s|,|\.", value)
             for item in values:
                 if item not in text:
-                    infos[key] = 'unknown'
+                    infos[key] = "unknown"
                     break
         else:
             for item in value:
                 if item not in text:
-                    infos[key] = 'unknown'
+                    infos[key] = "unknown"
                     break
 
     return infos
