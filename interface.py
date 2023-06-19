@@ -8,10 +8,13 @@ import streamlit.components.v1 as components
 from PIL import Image
 from streamlit_modal import Modal
 
+from Files_preprocessors.result_saver import dict_to_excel
 from Pipelines.complete_pipeline import pipeline
 
 
-# les variables pour controller l'affichage
+# Définir informations_extracted comme une variable globale
+if 'informations_extracted' not in st.session_state:
+    st.session_state['informations_extracted'] = ""
 
 def display_head_image():
     img = Image.open("UI/facture1_page-0001.jpg")
@@ -69,7 +72,10 @@ def display_info_requested(info_extractred: dict):
             </div>
         </div>    
 
-        """.format(info_extractred["expeditor_name"],info_extractred["expeditor_address"],info_extractred["receiver_name"],info_extractred["receiver_address"],info_extractred["total_amount"],info_extractred["goods_origin"],info_extractred["reference"],info_extractred["incoterm"])
+        """.format(info_extractred["expeditor_name"], info_extractred["expeditor_address"],
+                   info_extractred["receiver_name"], info_extractred["receiver_address"],
+                   info_extractred["total_amount"], info_extractred["goods_origin"], info_extractred["reference"],
+                   info_extractred["incoterm"])
         ,
         unsafe_allow_html=True
     )
@@ -102,14 +108,11 @@ space_div()
 
 uploaded_file = st.file_uploader("Uploader un fichier")
 
-
 if uploaded_file is not None:
     # Traitez le fichier ici
     temp_file = tempfile.NamedTemporaryFile(delete=False)
     temp_file.write(uploaded_file.read())
     temp_file.close()
-
-    informations_extracted = pipeline(temp_file.name)
 
     space_div()
 
@@ -117,7 +120,14 @@ if uploaded_file is not None:
 
     if columns_button_extract[1].button('Extract'):
 
-        if True:
+        st.session_state.informations_extracted = pipeline(temp_file.name)
+        # save the information in a csv file
+        st.session_state.informations_extracted['File name'] = uploaded_file.name
+        dict_to_excel(st.session_state.informations_extracted, r'results.xlsx')
+
+        if st.session_state.informations_extracted == "":
+            error_modal.open()
+        else:
             space_div()
 
             columns_infos_title = st.columns((0.65, 2, 0.15))
@@ -128,7 +138,7 @@ if uploaded_file is not None:
         with error_modal.container():
 
             html_string = """
-            <h1> Not transfert found with this reference </h1>
+            <h1> An error occured while extracting informations </h1>
 
             <script language="javascript">
               document.querySelector("h1").style.color = "red";
@@ -153,7 +163,7 @@ if uploaded_file is not None:
             columns_header[1].markdown('<p style="font-family:sans-serif; color:black; font-size: 25px;">INFORMATIONS '
                                        'EXTRACTED</p>', unsafe_allow_html=True)
 
-            display_info_requested(informations_extracted)
+            display_info_requested(st.session_state.informations_extracted)
 
             space_div()
 

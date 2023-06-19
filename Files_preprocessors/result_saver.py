@@ -66,6 +66,7 @@ def dict_to_excel(infos: dict, file_path: str) -> None:
 
         # Save the workbook to the file path
         workbook.save(file_path)
+        logger.info("Information saved to Excel file : {}".format(file_path))
     except FileNotFoundError as f:
         logger.error("Could not find the file to save the results : {}".format(file_path))
         raise f

@@ -22,8 +22,6 @@ def pipeline(file_path: str) -> Optional[dict]:
         infos['RIB'] = extract_rib(txt_text)
         # add the name of the file
         infos['File name'] = file_path.split('/')[-1]
-        # save the information in a csv file
-        dict_to_excel(infos, r'../results.xlsx')
 
         logger.success("Information extraction finished for file : {}".format(file_path))
         return infos

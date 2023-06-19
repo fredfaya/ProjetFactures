@@ -19,4 +19,4 @@ def convert_pdf_to_txt(path_to_file: str) -> str:
 
 
 if __name__ == '__main__':
-    print(convert_pdf_to_txt('../Files/facture1.pdf'))
+    print(convert_pdf_to_txt('../Files/test1.jpeg'))
