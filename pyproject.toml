@@ -1,0 +1,23 @@
+[tool.poetry]
+name = "projetfacture"
+version = "0.1.0"
+description = "Solution permettent de pouvoir extraire des informations de pdfs meme ocerises"
+authors = ["fredfaya <edyfoottv@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+
+
+[tool.poetry.group.dev.dependencies]
+openai = ">=0.27.5,<0.28.0"
+loguru = ">=0.7.0,<0.8.0"
+pytest = ">=7.3.1,<7.4.0"
+streamlit = ">=1.16.0,<1.17.0"
+pillow = ">=9.2.0,<9.3.0"
+openpyxl = ">=3.0.10,<3.1.0"
+tika = ">=2.6.0,<2.7.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
