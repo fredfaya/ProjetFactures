@@ -14,6 +14,24 @@ repos:
     rev: 23.3.0
     hooks:
     -   id: black
+-   repo: https://github.com/PyCQA/isort
+    rev: "5.12.0"
+    hooks:
+    -   id: isort
+-   repo: https://github.com/pre-commit/mirrors-autopep8
+    rev: v1.5.7
+    hooks:
+      - id: autopep8
+        args: [--in-place, --aggressive, --recursive]
+-   repo: https://github.com/pycqa/flake8
+    rev: 6.0.0
+    hooks:
+    -   id: flake8
+-   repo: https://github.com/pre-commit/mirrors-mypy
+    rev: "v1.3.0"
+    hooks:
+    -   id: mypy
+        args: [ --strict-optional, --ignore-missing-imports ]
 -   repo: https://github.com/myint/autoflake
     rev: v2.1.1
     hooks:
@@ -25,18 +43,8 @@ repos:
             - --remove-all-unused-imports
             - --expand-star-imports
             - --recursive
-            - src
--   repo: https://github.com/PyCQA/isort
-    rev: "5.12.0"
-    hooks:
-    -   id: isort
-        args: [--remove-unused-imports]
--   repo: https://github.com/pycqa/flake8
-    rev: 6.0.0
-    hooks:
-    -   id: flake8
--   repo: https://github.com/pre-commit/mirrors-mypy
-    rev: "v1.3.0"
-    hooks:
-    -   id: mypy
-        args: [ --strict-optional, --ignore-missing-imports ]
+            - Files_preprocessors
+            - GPT
+            - Pipelines
+            - Tests
+            - Texts
